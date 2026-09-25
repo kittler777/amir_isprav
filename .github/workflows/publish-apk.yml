@@ -1,0 +1,25 @@
+name: Add Nocturne APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-apk.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download APK
+        run: curl -fL --retry 3 -o Nocturne-Mellow-v0.5.apk https://nocturne-mellow-download.kerkerekleyla.chatgpt.site/Nocturne-Mellow-v0.5.apk
+      - name: Commit APK
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Nocturne-Mellow-v0.5.apk
+          git diff --cached --quiet || git commit -m "Add Nocturne Mellow v0.5 APK"
+          git push
